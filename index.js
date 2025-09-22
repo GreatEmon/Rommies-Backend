@@ -37,15 +37,20 @@ async function run() {
       res.send(data)
     })
 
+    app.get('/test',  (req, res) => {
+      res.send("Server is running")
+    })
+
     app.get('/home', async (req, res) => {
       const cursor = listcollection.find({availability : true}).limit(6);
       const data = await cursor.toArray()
       res.send(data)
     })
 
-    app.post('/add', (req, res) => {
-      const added = listcollection.insertOne(req.body)
-      
+    app.post('/add', async (req, res) => {
+      const added = await listcollection.insertOne(req.body)
+      res.send(added)
+
     })
 
     app.get('/details/:id', async (req, res) => {
@@ -53,7 +58,28 @@ async function run() {
       const query = {_id: new ObjectId(id)}
       const result = await listcollection.findOne(query);
       res.send(result)
+      console.log(result)
     })
+
+    app.delete('/delete/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id)
+      const query = {_id: new ObjectId(id)}
+      const result = await listcollection.deleteOne(query);
+      res.send(result)
+    })
+
+    app.patch('/update/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const lookup = await listcollection.findOne(query);
+      const updatedDoc = {
+        $set : req.body
+      }
+      const result = await listcollection.updateOne(lookup, updatedDoc)
+      res.send(result)
+    })
+
 
     app.get('/mylist/:email', async (req, res) => {
       const email = req.params.email;
