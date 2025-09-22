@@ -48,6 +48,7 @@ async function run() {
       const data = await cursor.toArray()
       res.send(data)
     })
+    
 
     app.post('/add', async (req, res) => {
       const added = await listcollection.insertOne(req.body)
@@ -55,12 +56,14 @@ async function run() {
 
     })
 
+
     app.get('/details/:id', async (req, res) => {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)}
       const result = await listcollection.findOne(query);
       res.send(result)
     })
+
 
     app.delete('/delete/:id', async (req, res) => {
       const id = req.params.id;
@@ -70,7 +73,7 @@ async function run() {
     })
 
 
-    
+
     app.patch('/update/:id', async (req, res) => {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)}
