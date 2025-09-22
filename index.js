@@ -60,7 +60,6 @@ async function run() {
       const query = {_id: new ObjectId(id)}
       const result = await listcollection.findOne(query);
       res.send(result)
-      console.log(result)
     })
 
     app.delete('/delete/:id', async (req, res) => {
