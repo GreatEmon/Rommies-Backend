@@ -5,6 +5,8 @@ dotenv.config()
 const app = express()
 const port = 3000
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
+//URI
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ndbz4pp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 app.use(cors())
@@ -18,6 +20,8 @@ const client = new MongoClient(uri, {
   }
 });
 
+
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -28,8 +32,6 @@ async function run() {
 
     // all route here
     const listcollection = client.db("roomX").collection("rooms")
-
-
 
     app.get('/', async (req, res) => {
       const cursor = listcollection.find();
@@ -69,6 +71,7 @@ async function run() {
       res.send(result)
     })
 
+
     app.patch('/update/:id', async (req, res) => {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)}
@@ -96,7 +99,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
 
 
 
